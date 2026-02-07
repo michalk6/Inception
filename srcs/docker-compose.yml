@@ -4,15 +4,36 @@ services:
   nginx:
     container_name: nginx
     build: ./requirements/nginx
+    depends_on:
+      - wordpress
+      - mariadb
     ports:
       - "80:80"
     volumes:
-      - ${DATA_PATH}:/var/www/html
+      - ${DATA_DIR}/wp:/var/www/html
+    networks:
+      inception:
     restart: unless-stopped
 
   wordpress:
     container_name: wp-php
     build: ./requirements/wordpress
+    depends_on:
+      - mariadb
     volumes:
-      - ${DATA_PATH}:/var/www/html
+      - ${DATA_DIR}/wp:/var/www/html
+    networks:
+      inception:
     restart: unless-stopped
+
+  mariadb:
+    container_name: mariadb
+    build: ./requirements/mariadb
+    volumes:
+      - ${DATA_DIR}/db:/var/lib/mysql
+    networks:
+      inception:
+    restart: unless-stopped
+
+networks:
+  inception:
