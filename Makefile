@@ -5,7 +5,7 @@ all: up
 
 build:
 	set -a; . $(ENV); set +a; \
-	mkdir $${DATA_DIR}/db $${DATA_DIR}/wp
+	mkdir -p $${DATA_DIR}/db $${DATA_DIR}/wp
 	docker compose --env-file $(ENV) -f $(COMPOSE) build
 
 up: build
