@@ -4,6 +4,8 @@ ENV		= ./secrets/.env
 all: up
 
 build:
+	set -a; . $(ENV); set +a; \
+	mkdir $${DATA_DIR}/db $${DATA_DIR}/wp
 	docker compose --env-file $(ENV) -f $(COMPOSE) build
 
 up: build
@@ -14,7 +16,8 @@ down:
 	docker compose --env-file $(ENV) -f $(COMPOSE) down
 
 clean: down
-	sudo rm -rf /home/mikurek/data/db /home/mikurek/data/wp
+	set -a; . $(ENV); set +a; \
+	sudo rm -rf $${DATA_DIR}/db $${DATA_DIR}/wp
 
 restart: down all
 
