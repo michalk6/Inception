@@ -1,4 +1,4 @@
-*This project has been created as part of the 42 curriculum by`<bkaleta>`{=html}.*
+*This project has been created as part of the 42 curriculum by`<mikurek>`{=html}.*
 
 # Inception
 
@@ -195,7 +195,7 @@ nc -zv localhost 80 nc -zv localhost 443
 
 Browser tests:
 
-http://bkaleta.42.fr https://bkaleta.42.fr
+http://mikurek.42.fr https://mikurek.42.fr
 
 Expected result: - HTTP (80) → connection refused - HTTPS (443) →
 WordPress page loads
