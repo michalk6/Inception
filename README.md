@@ -1,258 +1,128 @@
-*This project has been created as part of the 42 curriculum by`<mikurek>`{=html}.*
+*This project has been created as part of the 42 curriculum by <your_login>.*
 
 # Inception
 
 ## Description
 
-The goal of this project is to set up a small infrastructure using
-Docker and Docker Compose. The infrastructure consists of multiple
-containers that work together to provide a fully functional WordPress
-environment.
+The goal of this project is to build a multi-container infrastructure using Docker. It demonstrates how to run a complete web stack composed of:
 
-The project includes three main services:
+- an HTTP server (**NGINX**),
+- a CMS application (**WordPress**),
+- a database (**MariaDB**),
 
--   NGINX - a web server responsible for serving HTTPS traffic.
--   MariaDB - a database used by WordPress.
--   WordPress - a PHP-based CMS running on PHP-FPM.
+where each component runs in its own container and communicates through a dedicated Docker network.
 
-Each service runs inside its own Docker container, and the containers
-communicate with each other through a dedicated Docker network.
+The project focuses on:
+- service isolation,
+- container management,
+- network configuration,
+- security (environment variables vs secrets),
+- data persistence (volumes).
 
-The infrastructure also uses Docker volumes to persist data and Docker
-secrets / environment variables to manage configuration securely.
+---
 
-------------------------------------------------------------------------
+## Project Architecture
 
-# Project Architecture
+The project uses **Docker Compose** to manage multiple containers.
 
-The infrastructure consists of three containers:
+### Services
 
-NGINX │ │ WordPress │ │ MariaDB
+- **NGINX**
+  - web server
+  - HTTPS support (TLS)
+- **WordPress**
+  - PHP application running on php-fpm
+- **MariaDB**
+  - database for WordPress
 
--   NGINX listens only on port 443 (HTTPS).
--   WordPress communicates with MariaDB through the internal Docker
-    network.
--   MariaDB stores persistent data in a volume.
+### Network
 
-------------------------------------------------------------------------
+All containers are connected to a single, isolated Docker network, enabling secure communication between them.
 
-# Design Choices
+---
 
-## Virtual Machines vs Docker
+## Technical Choices
 
-  -----------------------------------------------------------------------
-  Virtual Machines                    Docker
-  ----------------------------------- -----------------------------------
-  Each VM includes a full operating   Containers share the host OS kernel
-  system
+### Virtual Machines vs Docker
 
-  Higher resource consumption         Lightweight and faster
+| Virtual Machines | Docker |
+|-----------------|--------|
+| Full operating system | Shared host kernel |
+| Heavyweight | Lightweight |
+| Slower startup | Fast startup |
+| Higher resource usage | Efficient resource usage |
 
-  Slower startup time                 Containers start almost instantly
+Docker is very good choise in terms of efficiency and ease of management.
 
-  Strong isolation                    Process-level isolation
-  -----------------------------------------------------------------------
+---
 
-------------------------------------------------------------------------
+### Secrets vs Environment Variables
 
-## Secrets vs Environment Variables
+| Secrets | Environment Variables |
+|--------|----------------------|
+| Secure storage | Easy to use |
+| Hidden from users | Visible in the system |
+| Better for sensitive data | Good for configuration |
 
-  -----------------------------------------------------------------------
-  Environment Variables               Docker Secrets
-  ----------------------------------- -----------------------------------
-  Stored in `.env` files              Stored in secure files mounted
-                                      inside containers
+- environment variables are used for configuration.
 
-  Easy to configure                   More secure for sensitive data
+---
 
-  Visible in container environment    Not exposed directly as environment
-                                      variables
-  -----------------------------------------------------------------------
+### Docker Network vs Host Network
 
-In this project: - Most configuration values are stored in `.env` -
-Database passwords are stored using Docker secrets
+| Docker Network | Host Network |
+|---------------|-------------|
+| Container isolation | No isolation |
+| Own address space | Shared with host |
+| More secure | Less secure |
 
-------------------------------------------------------------------------
+Docker Network is used for better isolation and traffic control.
 
-## Docker Network vs Host Network
+---
 
-  -----------------------------------------------------------------------
-  Docker Network                      Host Network
-  ----------------------------------- -----------------------------------
-  Containers communicate via internal Containers share host networking
-  DNS
+### Docker Volumes vs Bind Mounts
 
-  Better isolation                    Less isolation
+| Docker Volumes | Bind Mounts |
+|----------------|-------------|
+| Managed by Docker | Direct host access |
+| More secure | More flexible |
+| Better for production | Better for development |
 
-  Default and recommended approach    Often restricted in production
-  -----------------------------------------------------------------------
+- volumes are used for persistent data (MariaDB, WordPress)
 
-The project uses a custom bridge network (`inception`) so containers can
-communicate securely.
+---
 
-------------------------------------------------------------------------
+## Instructions
 
-## Docker Volumes vs Bind Mounts
+### Requirements
 
-  Docker Volumes               Bind Mounts
-  ---------------------------- --------------------------------
-  Managed by Docker            Directly maps host directories
-  More portable                Depends on host filesystem
-  Recommended for production   Often used for development
+- Docker
+- Docker Compose
+- Make
 
-The project uses Docker named volumes to store persistent data while
-ensuring the data is stored on the host inside:
+### Run the project
 
-/home/`<login>`{=html}/data
+The Makefile simplifies managing the Docker environment by wrapping common `docker compose` commands and handling environment variables and data directories.
 
-Persistent volumes: - WordPress files - MariaDB database files
+Commands
 
-------------------------------------------------------------------------
+- `make` / `make all`  
+  Build and start all containers.
 
-# Instructions
+- `make build`  
+  Build Docker images and create required data directories (`db`, `wp`).
 
-## Requirements
+- `make up`  
+  Start containers and display the WordPress admin URL (`127.0.0.1/wp-admin`).
 
--   Docker
--   Docker Compose
--   Make
+- `make down`  
+  Stop and remove containers.
 
-## Running the Project
+- `make clean`  
+  Stop containers and delete all data directories (**removes database and WordPress data**).
 
-Build and start all containers:
+- `make restart`  
+  Restart the project.
 
-make or docker compose up -d --build
-
-## Stop the infrastructure
-
-make down or docker compose down
-
-## Rebuild containers
-
-make up or docker compose build
-
-## View logs
-
-docker compose logs -f
-
-------------------------------------------------------------------------
-
-# Most Common Docker Commands
-
-  Command        Description
-  -------------- -----------------------------------------
-  docker build   Builds a Docker image from a Dockerfile
-  docker run     Runs a new container from an image
-  docker pull    Downloads an image from a registry
-  docker push    Uploads an image to a registry
-  docker ps      Lists running containers
-  docker stop    Stops a running container
-  docker rm      Removes a stopped container
-  docker rmi     Removes an image
-  docker exec    Executes a command inside a container
-  docker logs    Shows container logs
-
-------------------------------------------------------------------------
-
-# Most Common Docker Compose Commands
-
-  -----------------------------------------------------------------------
-  Command                     Description
-  --------------------------- -------------------------------------------
-  docker compose up           Builds and starts containers
-
-  docker compose down         Stops and removes containers, networks and
-                              volumes
-
-  docker compose start        Starts existing containers
-
-  docker compose stop         Stops containers
-
-  docker compose restart      Restarts containers
-
-  docker compose build        Builds images defined in docker-compose.yml
-
-  docker compose ps           Lists containers managed by Compose
-
-  docker compose logs         Displays logs
-
-  docker compose exec         Runs a command inside a container
-
-  docker compose pull         Pulls images from registry
-
-  docker compose push         Pushes images to registry
-  -----------------------------------------------------------------------
-
-------------------------------------------------------------------------
-
-# NGINX Tests
-
-Commands used to verify that NGINX is accessible only through port 443.
-
-curl -I http://localhost curl -kI https://localhost
-
-nc -zv localhost 80 nc -zv localhost 443
-
-Browser tests:
-
-http://mikurek.42.fr https://mikurek.42.fr
-
-Expected result: - HTTP (80) → connection refused - HTTPS (443) →
-WordPress page loads
-
-------------------------------------------------------------------------
-
-# WordPress / Database Tests
-
-Enter MariaDB container:
-
-docker exec -it mariadb sh
-
-Login to database:
-
-mariadb -u root -p\$(cat /run/secrets/db_root_password)
-
-Check database structure:
-
-SHOW DATABASES; USE wordpress; SHOW TABLES;
-
-Verify WordPress users:
-
-SELECT ID, user_login, user_email FROM wp_users;
-
-Check roles:
-
-SELECT \* FROM wp_usermeta WHERE meta_key='wp_capabilities';
-
-Exit:
-
-exit
-
-------------------------------------------------------------------------
-
-# Resources
-
-Docker documentation\
-https://docs.docker.com/
-
-Docker Compose documentation\
-https://docs.docker.com/compose/
-
-NGINX documentation\
-https://nginx.org/en/docs/
-
-WordPress CLI documentation\
-https://developer.wordpress.org/cli/
-
-MariaDB documentation\
-https://mariadb.org/documentation/
-
-------------------------------------------------------------------------
-
-# Use of AI Tools
-
-AI tools (including ChatGPT) were used to: - clarify Docker concepts -
-debug container networking issues - improve shell scripts - verify
-configuration approaches - assist in writing documentation
-
-All code and configuration were reviewed and tested manually.
+- `make re`  
+  Full reset: clean everything and rebuild from scratch.

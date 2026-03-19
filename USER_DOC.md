@@ -1,61 +1,62 @@
-# USER_DOC
+# User Documentation
 
-## Overview
+## Services Overview
 
-This project provides a containerized WordPress environment using Docker
-Compose. It consists of three services: - NGINX (HTTPS server) -
-WordPress (PHP-FPM) - MariaDB (database)
+This project provides a complete web stack composed of:
 
-------------------------------------------------------------------------
+- **NGINX** – handles HTTPS  
+- **WordPress** – the website (content management system)  
+- **MariaDB** – database used by WordPress  
 
-## Available Services
-
--   Website: https://`<your-domain>`{=html}
--   WordPress Admin Panel: https://`<your-domain>`{=html}/wp-admin
-
-------------------------------------------------------------------------
+All services run in separate Docker containers and communicate through a Docker network.
 
 ## Starting the Project
 
-To start the project:
+The Makefile simplifies managing the Docker environment by wrapping common `docker compose` commands and handling environment variables and data directories.
 
-make or docker compose up -d --build
+Commands
 
-------------------------------------------------------------------------
+- `make` / `make all`  
+  Build and start all containers.
 
-## Stopping the Project
+- `make build`  
+  Build Docker images and create required data directories (`db`, `wp`).
 
-docker compose down
+- `make up`  
+  Start containers and display the WordPress admin URL (`127.0.0.1/wp-admin`).
 
-------------------------------------------------------------------------
+- `make down`  
+  Stop and remove containers.
+
+- `make clean`  
+  Stop containers and delete all data directories (**removes database and WordPress data**).
+
+- `make restart`  
+  Restart the project.
+
+- `make re`  
+  Full reset: clean everything and rebuild from scratch.
+
 
 ## Accessing the Website
 
 Open in browser:
 
-https://`<your-domain>`{=html}
-
-------------------------------------------------------------------------
+https://mikurek.42.fr
 
 ## Accessing Admin Panel
 
-https://`<your-domain>`{=html}/wp-admin
+https://mikurek.42.fr/wp-admin
 
-Use credentials defined in `.env` file.
-
-------------------------------------------------------------------------
 
 ## Credentials
 
-Credentials are stored in: - `.env` file.
-
-------------------------------------------------------------------------
+Use credentials defined in `.env` file.
 
 ## Checking Services
 
 docker ps docker compose logs -f
 
-------------------------------------------------------------------------
 
 ## Verifying NGINX (HTTPS only)
 
@@ -65,7 +66,6 @@ curl -I http://localhost curl -kI https://localhost
 
 nc -zv localhost 80 nc -zv localhost 443
 
-------------------------------------------------------------------------
 
 ## Verifying Database
 
@@ -75,22 +75,13 @@ docker exec -it mariadb sh
 
 Login to database:
 
-mariadb -u root -p\$(cat /run/secrets/db_root_password)
+mariadb -u root -p
 
 Check database structure:
 
-SHOW DATABASES; USE wordpress; SHOW TABLES;
+SHOW DATABASES;
+USE db_name - enters desired databese;
+SHOW TABLES;
 
 Verify WordPress users:
-
-SELECT ID, user_login, user_email FROM wp_users;
-
-Check roles:
-
-SELECT \* FROM wp_usermeta WHERE meta_key='wp_capabilities';
-
-Exit:
-
-exit
-
-------------------------------------------------------------------------
+SELECT * FROM wp_users;

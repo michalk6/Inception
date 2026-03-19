@@ -6,58 +6,67 @@
 -   Docker Compose
 -   Make
 
-------------------------------------------------------------------------
+---
 
 ## Project Setup
 
 Clone repository and configure `.env`.
 
-------------------------------------------------------------------------
+---
 
 ## Environment Configuration
 
-Variables: LOGIN - DOMAIN_NAME - NETWORK_NAME - MYSQL_DATABASE - MYSQL_USER - DATA_PATH - WP_TITLE - WP_ADMIN_USR - WP_ADMIN_EMAIL - WP_ADMIN_PWD - WP_USER_USR - WP_USER_EMAIL - WP_USER_PWD
+Variables: 
+USER
+DATA_DIR
 
+WORDPRESS_DB_NAME
+WORDPRESS_DB_USER
+WORDPRESS_DB_PASSWORD
+WORDPRESS_DB_HOST
 
-------------------------------------------------------------------------
+WORDPRESS_URL
+WORDPRESS_TITLE
 
-## Build
+WORDPRESS_ADMIN
+WORDPRESS_ADMIN_PASSWORD
+WORDPRESS_ADMIN_EMAIL
 
-make build or docker compose build
+WORDPRESS_USER
+WORDPRESS_USER_PASSWORD
+WORDPRESS_USER_EMAIL
 
-------------------------------------------------------------------------
+---
+
+## Build project
+
+by Make: 
+- "make build"
+By docker compose:
+- make directories for volumes and set up environment variables
+- "docker compose build"
+
+---
 
 ## Run
+by Make:
+"make"
+By docker compose:
+"docker compose up"
 
-make or docker compose up -d
-
-------------------------------------------------------------------------
+---
 
 ## Managing Containers
 
-docker compose ps docker compose logs -f docker exec -it
-`<container_name>`{=html} sh
+docker ps 
+docker exec -it container_name sh
 
-------------------------------------------------------------------------
+---
 
 ## Volumes & Persistence
 
 Data stored in:
 
-/home/`<login>`{=html}/data
+/home/login/data
 
 Volumes: - db - wp
-
-------------------------------------------------------------------------
-
-## Cleaning
-
-make clean
-
-------------------------------------------------------------------------
-
-## Troubleshooting
-
-docker compose logs docker ps docker network ls
-
-------------------------------------------------------------------------
