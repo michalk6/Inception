@@ -41,25 +41,27 @@ WORDPRESS_USER_EMAIL
 ## Build project
 
 by Make: 
-- "make build"
+- `make build`
+
 By docker compose:
 - make directories for volumes and set up environment variables
-- "docker compose build"
+- `docker compose build`
 
 ---
 
 ## Run
 by Make:
-"make"
+`make`
+
 By docker compose:
-"docker compose up"
+`docker compose up`
 
 ---
 
 ## Managing Containers
 
 docker ps 
-docker exec -it container_name sh
+docker exec -it <container_name> sh
 
 ---
 

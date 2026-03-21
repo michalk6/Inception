@@ -69,19 +69,22 @@ nc -zv localhost 80 nc -zv localhost 443
 
 ## Verifying Database
 
-Enter MariaDB container:
-
+Enter MariaDB container:  
 docker exec -it mariadb sh
 
-Login to database:
-
+Login to database:  
 mariadb -u root -p
 
-Check database structure:
+Check database structure:  
+SHOW DATABASES;  
+USE <db_name> - enters desired databese;  
+SHOW TABLES;  
 
-SHOW DATABASES;
-USE db_name - enters desired databese;
-SHOW TABLES;
-
-Verify WordPress users:
+Verify WordPress users:  
 SELECT * FROM wp_users;
+
+## Checking ports
+
+Enter container: docker exec -it <container_name> sh  
+Check listening sockets: netstat -tuln  
+You can also check connection by: nc -zv <container_name> <container_port>  
