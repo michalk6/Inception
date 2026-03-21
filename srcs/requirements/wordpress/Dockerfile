@@ -1,5 +1,5 @@
 # wordpress
-FROM alpine:3.19
+FROM alpine:3.22
 
 RUN apk add --no-cache \
     php82 \
@@ -9,6 +9,8 @@ RUN apk add --no-cache \
     php82-phar \
     php82-mbstring \
     curl
+
+RUN ln -s /usr/bin/php82 /usr/bin/php
 
 COPY ./conf/www.conf /etc/php82/php-fpm.d/.
 COPY ./entrypoint.sh /entrypoint.sh
