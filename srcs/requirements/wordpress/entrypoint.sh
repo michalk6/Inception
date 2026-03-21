@@ -8,7 +8,7 @@ if [ ! -f wp-config.php ]; then
         --dbname=$WORDPRESS_DB_NAME \
         --dbuser=$WORDPRESS_DB_USER \
         --dbpass=$WORDPRESS_DB_PASSWORD \
-        --dbhost=$WORDPRESS_DB_HOST \
+        --dbhost=$WORDPRESS_DB_HOST:$WORDPRESS_DB_PORT \
         --allow-root
         
     wp core install \
