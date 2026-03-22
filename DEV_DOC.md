@@ -1,4 +1,4 @@
-# DEV_DOC
+# Developer Documentation
 
 ## Prerequisites
 
