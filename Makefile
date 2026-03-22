@@ -3,9 +3,12 @@ ENV		= ./secrets/.env
 
 all: up
 
-build:
+dirs:
 	set -a; . $(ENV); set +a; \
 	mkdir -p $${DATA_DIR}/db $${DATA_DIR}/wp
+
+build: dirs
+	set -a; . $(ENV); set +a; \
 	docker compose --env-file $(ENV) -f $(COMPOSE) build
 
 up: build
