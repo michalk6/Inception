@@ -126,3 +126,23 @@ Commands
 
 - `make re`  
   Full reset: clean everything and rebuild from scratch.
+
+## Resources
+
+The following resources were mainly used during the development process:
+
+- Docker Documentation: https://docs.docker.com/
+- Docker Compose Documentation: https://docs.docker.com/compose/
+- NGINX Documentation: https://nginx.org/en/docs/
+- WordPress CLI Documentation: https://developer.wordpress.org/cli/
+- MariaDB Documentation: https://mariadb.org/documentation/
+
+## Use of AI Tools
+
+AI tools were utilized to:
+- clarify Docker-related concepts
+- troubleshoot container networking issues
+- enhance shell scripts
+- verify implementation approaches
+
+All code and configurations were carefully reviewed and tested manually.
