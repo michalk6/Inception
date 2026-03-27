@@ -3,6 +3,10 @@ cd /var/www/html
 
 if [ ! -f wp-config.php ]; then
 
+    until nc -z mariadb $WORDPRESS_DB_PORT; do
+        sleep 1
+    done
+
     wp core download --allow-root
     wp config create \
         --dbname=$WORDPRESS_DB_NAME \

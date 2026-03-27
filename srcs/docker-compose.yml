@@ -31,6 +31,8 @@ services:
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb
+    env_file:
+      - ../secrets/.env
     volumes:
       - db_data:/var/lib/mysql
     networks:
